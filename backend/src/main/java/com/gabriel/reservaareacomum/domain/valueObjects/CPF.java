@@ -4,6 +4,7 @@ import com.gabriel.reservaareacomum.domain.exceptions.InvalidCPFException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CPF {
 
@@ -41,6 +42,19 @@ public class CPF {
         digits.add(validationDigit);
         validationDigits.add(validationDigit);
         return generateValidationDigits(digits.subList(1, digits.size()), validationDigits);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CPF cpf = (CPF) o;
+        return Objects.equals(value, cpf.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 
     public String getValue() {
