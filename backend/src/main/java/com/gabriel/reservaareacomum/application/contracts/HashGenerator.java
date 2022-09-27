@@ -1,5 +1,6 @@
 package com.gabriel.reservaareacomum.application.contracts;
 
-public interface Encoder extends HashChecker {
+public interface HashGenerator<I, O> {
 
+    O generate(I input);
 }

@@ -1,4 +1,4 @@
-package com.gabriel.reservaareacomum.domain.entities;
+package com.gabriel.reservaareacomum.domain.valueObjects;
 
 public class Password {
 

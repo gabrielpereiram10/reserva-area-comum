@@ -1,8 +1,8 @@
 package com.gabriel.reservaareacomum.application.auth;
 
-import com.gabriel.reservaareacomum.application.contracts.Encoder;
+import com.gabriel.reservaareacomum.application.contracts.IAuthUseCaseEncoder;
 import com.gabriel.reservaareacomum.application.exceptions.InvalidCredentialException;
-import com.gabriel.reservaareacomum.domain.entities.Password;
+import com.gabriel.reservaareacomum.domain.valueObjects.Password;
 import com.gabriel.reservaareacomum.domain.entities.User;
 import com.gabriel.reservaareacomum.domain.repositories.IUserRepository;
 import com.gabriel.reservaareacomum.domain.valueObjects.CPF;
@@ -26,7 +26,7 @@ public class AuthUseCaseTest {
     @MockBean
     private IUserRepository userRepository;
     @MockBean
-    private Encoder encoder;
+    private IAuthUseCaseEncoder encoder;
     private String cpf;
 
     @BeforeEach
