@@ -1,10 +1,14 @@
 import { NativeBaseProvider } from 'native-base';
+
+import { AuthProvider } from './src/contexts/auth';
 import { Routes } from './src/routes';
 
 export default function App() {
   return (
     <NativeBaseProvider>
-      <Routes />
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </NativeBaseProvider>
   );
 }
