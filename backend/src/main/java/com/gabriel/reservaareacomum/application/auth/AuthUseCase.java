@@ -1,35 +1,45 @@
 package com.gabriel.reservaareacomum.application.auth;
 
-import com.gabriel.reservaareacomum.application.contracts.IAuthUseCaseEncoder;
+import com.gabriel.reservaareacomum.application.contracts.HashChecker;
 import com.gabriel.reservaareacomum.application.exceptions.InvalidCredentialException;
 import com.gabriel.reservaareacomum.domain.valueObjects.Password;
 import com.gabriel.reservaareacomum.domain.entities.User;
 import com.gabriel.reservaareacomum.domain.repositories.IUserRepository;
 import com.gabriel.reservaareacomum.domain.valueObjects.CPF;
+import com.gabriel.reservaareacomum.shared.valueObjects.Role;
 
 import java.util.Optional;
 
 public class AuthUseCase {
 
     private final IUserRepository userRepository;
-    private final IAuthUseCaseEncoder encoder;
+    private final HashChecker<AuthHashCheckerInput> hashChecker;
 
-    public AuthUseCase(IUserRepository userRepository, IAuthUseCaseEncoder encoder) {
+    public AuthUseCase(IUserRepository userRepository, HashChecker<AuthHashCheckerInput> hashChecker) {
         this.userRepository = userRepository;
-        this.encoder = encoder;
+        this.hashChecker = hashChecker;
     }
 
-
     public AuthUseCaseOB execute(AuthUseCaseIB input) {
-        Optional<User> userAlreadyExists = userRepository.findUserBy(new CPF(input.getCpf()));
+        User userSignIn = new User(new CPF(input.getCpf()), new Password(input.getPassword()));
+        Optional<User> userAlreadyExists = userRepository.findUserBy(userSignIn.getCpf());
         if (userAlreadyExists.isEmpty()) throw new InvalidCredentialException();
 
         User user = userAlreadyExists.get();
-        boolean passwordNotMatched = !encoder.check(new AuthHashCheckerInput(user, new Password(input.getPassword())));
+        boolean passwordNotMatched = !hashChecker.check(new AuthHashCheckerInput(user, userSignIn));
         if (passwordNotMatched) throw new InvalidCredentialException();
 
-        AuthHashGeneratorOutput tokenData = encoder.generate(new AuthHashGeneratorInput(user));
-        userRepository.saveRefreshToken(tokenData.getRefreshToken());
-        return new AuthUseCaseOB(user, tokenData);
+        AuthUseCaseOB output = new AuthUseCaseOB(user);
+        definePermissions(user, output);
+        return output;
+    }
+
+    private void definePermissions(User user, AuthUseCaseOB output) {
+        for (Role role : user.getRoles()) {
+            Boolean isAdmin = role == Role.ADMIN;
+            output.getPermissions().put("isAdmin", isAdmin);
+            Boolean isMorador = role == Role.MORADOR;
+            output.getPermissions().put("isMorador", isMorador);
+        }
     }
 }

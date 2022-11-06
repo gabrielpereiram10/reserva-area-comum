@@ -2,56 +2,40 @@ package com.gabriel.reservaareacomum.application.auth;
 
 import com.gabriel.reservaareacomum.domain.entities.User;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AuthUseCaseOB {
 
-    private UUID userId, accessToken, refreshToken;
-    private String userName, userEmail, tokenType;
+    private Long userId;
+    private String userName, userEmail;
     private List<String> roles;
+    private Map<String, Boolean> permissions = new HashMap<>();
 
-    protected AuthUseCaseOB(User user, AuthHashGeneratorOutput tokenData) {
-        this.userId = user.getUserId().getValue();
+    protected AuthUseCaseOB(User user) {
+        this.userId = user.getUserId();
         this.userName = user.getName();
         this.userEmail = user.getEmail().getValue();
         this.roles = user.getRoles().stream().map(Enum::name).collect(Collectors.toList());
-        this.tokenType = tokenData.getTokenType();
-        this.accessToken = tokenData.getAccessToken().getValue();
-        this.refreshToken = tokenData.getRefreshToken().getValue();
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public Map<String, Boolean> getPermissions() {
+        return permissions;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setPermissions(Map<String, Boolean> permissions) {
+        this.permissions = permissions;
     }
 
-    public UUID getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public UUID getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(UUID accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public UUID getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(UUID refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     public String getUserName() {
@@ -70,11 +54,11 @@ public class AuthUseCaseOB {
         this.userEmail = userEmail;
     }
 
-    public String getTokenType() {
-        return tokenType;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

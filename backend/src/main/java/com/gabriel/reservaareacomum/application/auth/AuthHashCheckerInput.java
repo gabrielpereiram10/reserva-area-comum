@@ -1,14 +1,13 @@
 package com.gabriel.reservaareacomum.application.auth;
 
-import com.gabriel.reservaareacomum.domain.valueObjects.Password;
 import com.gabriel.reservaareacomum.domain.entities.User;
 
 public class AuthHashCheckerInput {
     private String value, hashedValues;
 
-    protected AuthHashCheckerInput(User user, Password passwordForChecking) {
+    protected AuthHashCheckerInput(User user, User userSignIn) {
         this.hashedValues = user.getPassword().getValue();
-        this.value = passwordForChecking.getValue();
+        this.value = userSignIn.getPassword().getValue();
     }
 
     public String getValue() {

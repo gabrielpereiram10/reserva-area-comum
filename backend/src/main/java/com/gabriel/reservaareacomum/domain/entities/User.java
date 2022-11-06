@@ -1,19 +1,20 @@
 package com.gabriel.reservaareacomum.domain.entities;
 
 import com.gabriel.reservaareacomum.domain.valueObjects.*;
+import com.gabriel.reservaareacomum.shared.valueObjects.Role;
 
 import java.util.List;
 
 public class User {
 
-    private ID userId;
+    private Long userId;
     private String name;
     private Email email;
     private CPF cpf;
     private Password password;
     private List<Role> roles;
 
-    public User(ID userId, String name, Email email, CPF cpf, Password password, List<Role> roles) {
+    public User(Long userId, String name, Email email, CPF cpf, Password password, List<Role> roles) {
         this(cpf, password);
         this.userId = userId;
         this.name = name;
@@ -34,7 +35,7 @@ public class User {
         return name;
     }
 
-    public ID getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
