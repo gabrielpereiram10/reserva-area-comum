@@ -1,25 +1,30 @@
-import { AuthData } from "../@types/auth"
+import { AuthData, SignData } from "../@types/auth"
 import { ResponseData } from "../@types/http"
+import api from "."
 
-const authenticate = (cpf: string, password: string): Promise<ResponseData<AuthData>> => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (cpf !== "00000000000" || password !== "123456") {
-                reject({
-                    success: false,
-                    message: "Credenciais inválidas."
-                })
+const authenticate = async (data: SignData): Promise<ResponseData<AuthData>> => {
+    try {
+        const response = await api.post("/auth", { ...data })
+        const { user, token } = response.data
+        return {
+            success: true,
+            data: {
+                user: {
+                    email: user?.userEmail,
+                    name: user?.userName
+                },
+                token: {
+                    type: token?.type,
+                    accessToken: token?.token
+                },
             }
-            resolve({
-                success: true,
-                data: {
-                    token: "token",
-                    email: "fulano@gmail.com",
-                    name: 'Fulano da Silva',
-                }
-            })
-        }, 1000)
-    })
+        }
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error.message
+        }
+    }
 }
 
 export const authService = {

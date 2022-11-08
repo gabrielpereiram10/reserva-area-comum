@@ -38,7 +38,7 @@ export const SignForm = () => {
         setIsLoading(true)
         const result = await signIn(values)
         setIsLoading(false)
-        if (!result.success) Alert.alert("", result.message)
+        if (!result.success) Alert.alert("Erro!", result.message)
     }
 
     return (

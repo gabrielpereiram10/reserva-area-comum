@@ -6,7 +6,7 @@ import { AuthenticatedRoute } from "./authenticated.d.routes";
 import { UnauthenticatedRoutes } from "./unauthenticated.d.routes"
 
 export const Routes = () => {
-    const { authData, isLoading } = useAuth()
+    const { isAuthenticated, isLoading } = useAuth()
 
     if (isLoading) {
         return <Loading />;
@@ -14,7 +14,7 @@ export const Routes = () => {
 
     return (
         <NavigationContainer>
-            {!authData?.token ? <UnauthenticatedRoutes /> : <AuthenticatedRoute />}
+            {isAuthenticated ? <AuthenticatedRoute /> : <UnauthenticatedRoutes />}
         </NavigationContainer>
     )
 }

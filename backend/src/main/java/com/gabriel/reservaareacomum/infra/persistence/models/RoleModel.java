@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "ROLES")
+@Entity(name = "roles")
 public class RoleModel implements GrantedAuthority, Serializable {
     private static final Long serialVersionUID = 1L;
 

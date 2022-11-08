@@ -2,15 +2,21 @@ import { ResponseData } from "./http"
 
 export type AuthContextData = {
     authData?: AuthData
+    isAuthenticated: boolean
     isLoading: boolean
-    signIn(data: SignData): Promise<ResponseData<null>>
+    signIn(signData: SignData): Promise<ResponseData<AuthData>>
     signOut(): void
 }
 
 export type AuthData = {
-    token: string
-    email: string
-    name: string
+    user: {
+        email: string
+        name: string
+    }
+    token: {
+        type: string
+        accessToken: string
+    }
 }
 
 export type SignData = {
