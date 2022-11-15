@@ -14,6 +14,7 @@ axiosInstance.interceptors.response.use(config => {
     return config
 }, error => {
     const { data } = error.response
+    console.log(error.response)
     return Promise.reject({
         ...data,
         message: data?.message || "Erro de conexão"
